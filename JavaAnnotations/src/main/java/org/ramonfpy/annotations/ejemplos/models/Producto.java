@@ -1,19 +1,32 @@
 package org.ramonfpy.annotations.ejemplos.models;
 
+import org.ramonfpy.annotations.ejemplos.Init;
 import org.ramonfpy.annotations.ejemplos.JsonAtributo;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class Producto {
 
     //@JsonAtributo (nombre = "Descripción") //Toma este valor en lugar de nombre.
-    @JsonAtributo (capitalizar = true)
+    //@JsonAtributo (capitalizar = true) //Cuando estaba el capitalizador en el JsonSerializador.
+    @JsonAtributo
     private String nombre;
 
     @JsonAtributo
     private long precio;
     private LocalDate fecha;
+
+    //Anotación @Init.
+    @Init
+    private void init(){
+        this.nombre = Arrays.stream(nombre.split(" "))
+                .map(palabra -> palabra.substring(0, 1).toUpperCase()
+                        + palabra.substring(1).toLowerCase())
+                .collect(Collectors.joining(" "));
+    }
 
     public Producto() {
     }
